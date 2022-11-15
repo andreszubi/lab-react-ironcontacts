@@ -4,12 +4,16 @@ import contactsJSON from './contacts.json';
 
 function App() {
   const [contacts, setContacts] = useState(contactsJSON.slice(0, 5));
-  const [newContact, setNewContact] = useState(contactsJSON.slice(5, 6));
-
-  // Add random contact
+ 
+ 
+  //add random contact without duplicates
   const addRandomContact = () => {
-    setContacts([...contacts, newContact]);
-    setNewContact(contactsJSON[Math.floor(Math.random() * contactsJSON.length)]);
+    const randomContact = contactsJSON[Math.floor(Math.random() * contactsJSON.length)];
+    if (contacts.includes(randomContact)) {
+      addRandomContact();
+    } else {
+      setContacts([...contacts, randomContact]);
+    }
   };
 
 
@@ -75,9 +79,9 @@ function App() {
                 <img src={contact.pictureUrl} alt={contact.name} />
               </td>
               <td>{contact.name}</td>
-              <td>{contact.popularity}</td>
+              <td>{contact.popularity.toFixed(2)}</td>
               <td>{contact.wonOscar ? '🏆' : ''}</td>
-              <td>{contact.wonEmmy ? '🏆' : ''}</td>
+              <td>{contact.wonEmmy ? '🌟' : ''}</td>
               <td> <button onClick={() => deleteContact(contact.id)}>Delete</button></td>
             </tr>
           ))}
